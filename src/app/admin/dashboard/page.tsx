@@ -144,40 +144,39 @@ const Dashboard = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="flex h-screen bg-gray-50 font-serif">
-      <Sidebar />
+    <div className="flex h-screen bg-gray-50 font-serif ">
+      <Sidebar/>
 
-      <div className="flex-1 flex flex-col md:ml-64">
+      <div className="flex-1 md:ml-64 max-w-7xl mx-auto">
         {/* Top Navigation */}
         <nav className="bg-pink-600 text-white shadow-sm p-4 flex justify-between items-center">
-      <div className="flex items-center">
-        <Slide direction="left" delay={100} triggerOnce>
-        
-        <h1 className="text-2xl font-bold inline-flex gap-1">
-        <FiActivity className="w-8 h-8 mr-2 text-white" />
-          Hekto Dashboard</h1>
-        </Slide>
-        
-      </div>
-      <div className="flex items-center space-x-4">
-        <button className="flex items-center space-x-2">
-          <span className="hidden md:inline font-bold">Areeba Bano</span>
-          <Image 
-            src="/admin.jpg" 
-            width={32} 
-            height={32} 
-            className="rounded-full" 
-            alt="Profile" 
-          />
-        </button>
-        <FiLogOut size={20} className="cursor-pointer hover:text-red-600 font-semibold" />
-      </div>
-    </nav>
+          <div className="flex items-center">
+            <Slide direction="left" delay={100} triggerOnce>
+              <h1 className="ml-12 md:ml-0 text-lg md:text-2xl font-bold inline-flex gap-1">
+                <FiActivity className="w-4 h-4 md:w-8 md:h-8 mr-2 text-white" />
+                Hekto Dashboard
+              </h1>
+            </Slide>
+          </div>
+          <div className="flex items-center space-x-2 md:space-x-4">
+            <button className="flex items-center space-x-2">
+              <span className="hidden md:inline font-bold">Areeba Bano</span>
+              <Image 
+                src="/admin.jpg" 
+                width={32} 
+                height={32} 
+                className="w-8 h-8 md:w-10 md:h-10 rounded-full" 
+                alt="Profile" 
+              />
+            </button>
+            <FiLogOut size={20} className="cursor-pointer hover:text-red-600 font-semibold" />
+          </div>
+        </nav>
 
         {/* Main Content */}
-        <main className="flex-1 p-6 overflow-y-auto">
+        <main className="flex-1 p-4 md:p-6 overflow-y-auto">
           {/* Metrics Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
   {[
     {
       title: "Total Orders",
@@ -245,18 +244,18 @@ const Dashboard = () => {
 </div>
 
 
-<div className="relative overflow-hidden h-[500px] flex flex-col gap-6">
-  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+<div className="relative overflow-hidden h-auto md:h-[500px] flex flex-col gap-4 md:gap-6">
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
     {/* Financial Overview Chart */}
     <Zoom triggerOnce>
       <motion.div
-        className="bg-white p-6 rounded-xl shadow-lg border-2 border-transparent hover:scale-105 transition duration-500"
+        className="bg-white p-4 md:p-6 rounded-xl shadow-lg border-2 border-transparent h-auto md:h-[400px]"
         whileHover={{ scale: 1.1 }}
       >
-        <h3 className="text-lg font-semibold mb-4 text-gray-700 text-center">Financial Overview</h3>
+        <h3 className="text-base md:text-lg font-semibold mb-4 text-gray-700 text-center">Financial Overview</h3>
         
         <motion.div
-          className="h-64 flex justify-center items-center"
+          className="h-48 md:h-64"
           animate={{ rotate: 360 }}
           transition={{ repeat: Infinity, duration: 10, ease: "linear" }}
         >
@@ -297,7 +296,7 @@ const Dashboard = () => {
     {/* Sales Distribution Chart */}
     <Zoom triggerOnce>
       <motion.div
-        className="bg-white p-6 rounded-xl shadow-lg border-2 border-transparent hover:scale-105 transition duration-500"
+        className="bg-white p-4 md:p-6 rounded-xl shadow-lg border-2 border-transparent h-auto md:h-[400px]"
         whileHover={{ scale: 1.1 }}
       >
         <h3 className="text-lg font-semibold mb-4 text-gray-700 text-center">Sales Distribution</h3>
@@ -345,16 +344,16 @@ const Dashboard = () => {
 
           {/* Recent Activities */}
           <motion.div 
-  className="bg-white rounded-xl shadow-sm p-6"
+  className="bg-white rounded-xl shadow-sm p-4 md:p-6 mt-4 md:mt-6"
   initial={{ opacity: 0, scale: 0.9 }}
   animate={{ opacity: 1, scale: 1 }}
   transition={{ duration: 0.5, ease: "easeOut" }}
 >
   {/* Heading */}
-  <div className="flex justify-between items-center mb-4">
-    <h3 className="text-lg font-semibold">Recent Activities</h3>
+  <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+    <h3 className="text-base md:text-lg font-semibold mb-2 md:mb-0">Recent Activities</h3>
     <motion.button
-      className="bg-purple-100 text-purple-600 px-4 py-2 rounded-lg flex items-center"
+      className="bg-purple-100 text-purple-600 px-3 py-1 md:px-4 md:py-2 rounded-lg flex items-center text-sm md:text-base"
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
     >
@@ -363,11 +362,11 @@ const Dashboard = () => {
   </div>
 
   {/* Activity List */}
-  <div className="space-y-4">
+  <div className="space-y-3 md:space-y-4">
     {activities.map((activity, index) => (
       <motion.div
         key={activity.id}
-        className="flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 rounded-lg"
+        className="flex flex-col md:flex-row items-start md:items-center justify-between p-3 md:p-4 bg-gray-50 hover:bg-gray-100 rounded-lg"
         variants={activityVariants}
         initial="hidden"
         animate="visible"
@@ -375,22 +374,22 @@ const Dashboard = () => {
         whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
       >
         {/* Activity Details */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-3 mb-2 md:mb-0">
           <div className="p-2 rounded-lg bg-white shadow-sm">
             {getActivityIcon(activity.type)}
           </div>
           <div>
-            <p className="font-serif">
+            <p className="text-sm md:text-base">
               {activity.type === "order" ? `Order #${activity.id}` : activity.description || `Sale to ${activity.customer}`}
             </p>
-            <p className="text-sm text-gray-500">{activity.date}</p>
+            <p className="text-xs md:text-sm text-gray-500">{activity.date}</p>
           </div>
         </div>
 
         {/* Amount & Status */}
-        <div className={`font-semibold ${
-          activity.amount! < 0 ? "text-red-500" : "text-green-500"
-        }`}>
+        <div className={`text-sm md:text-base font-semibold ${
+                    activity.amount! < 0 ? "text-red-500" : "text-green-500"
+                  }`}>
           {activity.amount && `${activity.amount < 0 ? "-" : "+"}$${Math.abs(activity.amount)}`}
           {activity.status && (
             <span className={`ml-4 px-2 py-1 rounded-full text-sm ${
@@ -409,26 +408,26 @@ const Dashboard = () => {
           {/* Quick Actions */}
         
 
-          <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="mt-6 md:mt-8 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
       {actions.map(({ id, label, icon: Icon, bg, border, text }) => (
         <motion.button
           key={id}
-          className={`p-6 rounded-xl flex flex-col items-center justify-center transition ${bg} ${border} border-2 ${text} relative h-24 w-full`}
+          className={`p-4 md:p-6 rounded-xl flex flex-col items-center justify-center ${bg} ${border} border-2 ${text} relative h-20 md:h-24 w-full`}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
           {/* Flip Animation on Hover */}
           <motion.div
-            className="w-10 h-10 flex justify-center items-center"
+            className="w-8 h-8 md:w-10 md:h-10 flex justify-center items-center"
             initial={{ rotateY: 0 }}
             whileHover={{ rotateY: 180, transition: { duration: 0.4 } }}
           >
-            <Icon className="w-8 h-8" />
+            <Icon className="w-6 h-6 md:w-8 md:h-8" />
           </motion.div>
 
           {/* Hide Text on Hover */}
           <motion.span
-            className={`text-sm mt-2 transition-opacity`}
+            className="text-xs md:text-sm mt-2"
             initial={{ opacity: 1 }}
             whileHover={{ opacity: 0, transition: { duration: 0.3 } }}
           >
