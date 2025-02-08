@@ -1,6 +1,6 @@
 "use client";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
 import Image from "next/image";
 import { FaUser, FaSignInAlt, FaEye, FaEyeSlash } from "react-icons/fa";
 
@@ -9,26 +9,35 @@ export default function Admin() {
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [imageSrc, setImageSrc] = useState("/admin.png");
-    const [errorMessage, setErrorMessage] = useState("");  
+    const [errorMessage, setErrorMessage] = useState("");
+    const [isClient, setIsClient] = useState(false); // To prevent SSR issues
     const router = useRouter();
 
-    // Ensure the code runs only on the client side
+    // Ensure the component runs only on the client
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+
+    // Handle login
     const handleAdminLogin = (e: React.FormEvent) => {
         e.preventDefault();
-        
-        if (typeof window !== "undefined") {
-            if (email === "admin@example.com" && password === "password123") {
-                localStorage.setItem("isLoggedIn", "true");  
-                router.push("/admin/dashboard");
-            } else {
-                setErrorMessage("Invalid email or password!");  
+        if (email === "admin@example.com" && password === "password123") {
+            if (typeof window !== "undefined") {
+                localStorage.setItem("isLoggedIn", "true");
             }
+            router.push("/admin/dashboard");
+        } else {
+            setErrorMessage("Invalid email or password!");
         }
     };
+
+    // Prevent server-side rendering
+    if (!isClient) return null;
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-white px-6">
             <div className="flex bg-white p-10 rounded-lg shadow-lg w-full max-w-4xl">
+                {/* Image Section */}
                 <div className="w-1/2 flex items-center justify-center">
                     <Image 
                         src={imageSrc} 
@@ -37,25 +46,28 @@ export default function Admin() {
                         height={350} 
                         className="rounded-lg shadow-md transition-all duration-500 hover:opacity-80"
                         onMouseEnter={() => setImageSrc("/admin2.png")}
-                        onMouseLeave={() => setImageSrc("/admin1.png")}
+                        onMouseLeave={() => setImageSrc("/admin.png")}
                     />
                 </div>
+
+                {/* Login Form */}
                 <form 
                     onSubmit={handleAdminLogin} 
                     className="w-1/2 p-6 bg-white rounded-lg"
                 >
-                    <h2 className="flex flex-col text-2xl font-semibold mb-6 text-center text-pink-500">
-                        <span className="flex flex-col text-4xl font-bold text-gray-500">
+                    <h2 className="text-2xl font-semibold mb-6 text-center text-pink-500">
+                        <span className="text-4xl font-bold text-gray-500">
                             Hekto
-                            <span className="text-sm text-gray-400 mb-2">
+                            <span className="text-sm text-gray-400 block">
                                 Building the Future of Furniture Shopping
                             </span>
                         </span>
-                        <span className="flex items-center justify-center gap-2">
+                        <span className="flex items-center justify-center gap-2 mt-2">
                             <FaUser className="text-xl" /> Admin Login
                         </span>
                     </h2>
 
+                    {/* Email Input */}
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-medium mb-2">Email</label>
                         <input 
@@ -67,6 +79,7 @@ export default function Admin() {
                         />
                     </div>
 
+                    {/* Password Input */}
                     <div className="mb-4 relative">
                         <label className="block text-gray-700 text-sm font-medium mb-2">Password</label>
                         <div className="relative">
@@ -87,6 +100,7 @@ export default function Admin() {
                         </div>
                     </div>
 
+                    {/* Login Button */}
                     <button 
                         type="submit" 
                         className="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white py-2 rounded-md hover:from-purple-600 hover:to-pink-500 transition duration-300 font-medium flex items-center justify-center gap-2"
@@ -94,14 +108,16 @@ export default function Admin() {
                         Login <FaSignInAlt className="text-lg" />
                     </button>
 
+                    {/* Error Message */}
                     {errorMessage && (
-                        <p className="text-red-500 text-sm mt-3 text-center">{errorMessage}</p>  
+                        <p className="text-red-500 text-sm mt-3 text-center">{errorMessage}</p>
                     )}
                 </form>
             </div>
         </div>
     );
 }
+
 
 
 // "use client";
