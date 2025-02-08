@@ -1,14 +1,41 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { BiSolidDashboard } from "react-icons/bi";
-import { FaBox, FaShoppingCart } from "react-icons/fa";
+import { FaBox, FaChartBar, FaChartLine, FaChartPie, FaShoppingCart } from "react-icons/fa";
 import { RiLogoutCircleLine, RiMenu3Line, RiCloseLine } from "react-icons/ri";
+import { useState } from "react";
 import { Fade } from "react-awesome-reveal";
+import Swal from "sweetalert2";
+import { TbBrandGoogleAnalytics } from "react-icons/tb";
 
 export default function Sidebar() {
-  const [active, setActive] = useState("Dashboard");
+  const router = useRouter(); // Get the router instance to use the push method for navigation
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+
+  // Function to apply the same gradient to all active links
+  const getLinkGradient = (link: string) =>
+    pathname === link
+      ? "bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold"
+      : "hover:bg-gray-200 text-gray-700";
+
+      // Logout Confirmation
+  const handleLogout = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to log out?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, Logout!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        router.push("/admin"); // Redirect to /admin after logout
+      }
+    });
+  };
 
   return (
     <>
@@ -22,16 +49,17 @@ export default function Sidebar() {
 
       {/* Sidebar */}
       <div
-        className={`fixed top-0 left-0 h-screen w-64 bg-white font-serif text-gray-700 flex flex-col p-5 shadow-lg border-r z-50 transform transition-transform duration-300 lg:translate-x-0 
+        className={`fixed top-0 left-0 h-screen w-64 bg-white text-gray-700 flex flex-col p-5 shadow-lg border-r z-50 transform transition-transform duration-300 lg:translate-x-0 
           ${isOpen ? "translate-x-0" : "-translate-x-full"} lg:block`}
       >
         {/* Close Button for Mobile */}
         <button
-            className="lg:hidden absolute right-4 top-2 text-gray-600 text-2xl"
-            onClick={() => setIsOpen(false)}
-          >
-            <RiCloseLine className="text-gray-400 hover:text-pink-500"/>
-          </button>
+          className="lg:hidden absolute right-4 top-2 text-gray-600 text-2xl"
+          onClick={() => setIsOpen(false)}
+        >
+          <RiCloseLine className="text-gray-400 hover:text-pink-500"/>
+        </button>
+
         <Fade cascade duration={500} direction="left">
           {/* Branding */}
           <h1 className="text-3xl font-bold text-pink-500 text-center">Hekto</h1>
@@ -42,19 +70,15 @@ export default function Sidebar() {
           {/* Navigation Links */}
           <nav className="flex flex-col gap-2">
             {[
-              { name: "Dashboard", icon: <BiSolidDashboard />, link: "/admin/dashboard" },
+              { name: "Dashboard", icon: <FaChartBar />, link: "/admin/dashboard" },
               { name: "Orders", icon: <FaShoppingCart />, link: "/admin/orders" },
               { name: "Products", icon: <FaBox />, link: "/admin/products" }
             ].map((item) => (
               <Link
                 key={item.name}
                 href={item.link}
-                className={`flex items-center gap-3 p-3 rounded-md transition-all duration-300 ${
-                  active === item.name
-                    ? "bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold"
-                    : "hover:bg-purple-100"
-                }`}
-                onClick={() => { setActive(item.name); setIsOpen(false); }}
+                className={`flex items-center gap-3 p-3 rounded-md transition-all duration-300 ${getLinkGradient(item.link)}`}
+                onClick={() => setIsOpen(false)}
               >
                 {item.icon} {item.name}
               </Link>
@@ -63,7 +87,7 @@ export default function Sidebar() {
             {/* Logout Button */}
             <button
               className="flex items-center gap-3 p-3 rounded-md transition-all duration-300 text-red-600 hover:bg-red-100 mt-auto"
-              onClick={() => alert("Logging out...")}
+              onClick={handleLogout}
             >
               <RiLogoutCircleLine className="text-lg" /> Logout
             </button>
@@ -73,7 +97,6 @@ export default function Sidebar() {
     </>
   );
 }
-
 
 
 // "use client";

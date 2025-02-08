@@ -15,6 +15,9 @@ import { FaSackDollar } from "react-icons/fa6";
 import { keyframes } from "@emotion/react";
 import {motion } from "framer-motion"
 import Image from "next/image";
+import Loading from "@/components/Loading";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 const activityVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -75,6 +78,25 @@ const Dashboard = () => {
     { name: "Clothing", value: 35000, color: "#ff7043" },
     { name: "Accessories", value: 25000, color: "#64b5f6" }
   ];
+
+  const router = useRouter();
+
+  // Logout Confirmation
+    const handleLogout = () => {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to log out?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, Logout!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          router.push("/admin"); // Redirect to /admin after logout
+        }
+      });
+    };
 
   const getActivityIcon = (type: string) => {
     const icons = {
@@ -140,7 +162,7 @@ const Dashboard = () => {
   const pendingOrders = orders.filter(order => order.status === 'pending').length;
 
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div><Loading/></div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
@@ -149,11 +171,11 @@ const Dashboard = () => {
 
       <div className="flex-1 md:ml-64 max-w-7xl mx-auto">
         {/* Top Navigation */}
-        <nav className="bg-pink-600 text-white shadow-sm p-4 flex justify-between items-center">
+        <nav className="bg-gradient-to-r from-pink-600 to-purple-600 text-white shadow-sm p-4 flex justify-between items-center">
           <div className="flex items-center">
             <Slide direction="left" delay={100} triggerOnce>
               <h1 className="ml-12 md:ml-0 text-lg md:text-2xl font-bold inline-flex gap-1">
-                <FiActivity className="w-4 h-4 md:w-8 md:h-8 mr-2 text-white" />
+                <FiActivity className="w-4 h-4 md:w-8 md:h-8 mr-2 mt-1 md:mt-0 text-white" />
                 Hekto Dashboard
               </h1>
             </Slide>
@@ -169,7 +191,12 @@ const Dashboard = () => {
                 alt="Profile" 
               />
             </button>
-            <FiLogOut size={20} className="cursor-pointer hover:text-red-600 font-semibold" />
+            <FiLogOut
+            size={38} 
+            onClick={handleLogout}
+  className="cursor-pointer p-2 rounded-full text-white font-bold hover:text-red-600 hover:bg-white transition-colors duration-300"
+/>
+
           </div>
         </nav>
 

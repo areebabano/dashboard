@@ -9,16 +9,16 @@ export default function Admin() {
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [imageSrc, setImageSrc] = useState("/admin.png");
+    const [errorMessage, setErrorMessage] = useState("");  // State for error message
     const router = useRouter();
 
     const handleAdminLogin = (e: React.FormEvent) => {
         e.preventDefault();
-        
         if (email === "admin@example.com" && password === "password123") {
             localStorage.setItem("isLoggedIn", "true");  
             router.push("/admin/dashboard");
         } else {
-            alert("Invalid credentials!");
+            setErrorMessage("Invalid email or password!");  // Set error message
         }
     };
 
@@ -89,6 +89,10 @@ export default function Admin() {
                     >
                         Login <FaSignInAlt className="text-lg" />
                     </button>
+
+                    {errorMessage && (
+                        <p className="text-red-500 text-sm mt-3 text-center">{errorMessage}</p>  // Display error message
+                    )}
                 </form>
             </div>
         </div>

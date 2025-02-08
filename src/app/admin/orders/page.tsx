@@ -9,8 +9,11 @@ import { Slide } from "react-awesome-reveal";
 import { FaTimes } from "react-icons/fa"; // Close icon for mobile sidebar
 import { RiDeleteBinLine } from "react-icons/ri";
 import { TbShoppingCartDiscount } from "react-icons/tb";
-import { FiMenu } from "react-icons/fi"; // Hamburger icon for mobile
+import { FiLogOut, FiMenu } from "react-icons/fi"; // Hamburger icon for mobile
 import Swal from "sweetalert2";
+import Loading from "@/components/Loading";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface Order {
   _id: string;
@@ -35,6 +38,9 @@ function Dashboard() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [filter, setFilter] = useState("All");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  
 
   useEffect(() => {
     client
@@ -57,6 +63,7 @@ function Dashboard() {
       )
       .then((data) => setOrders(data))
       .catch((error) => console.error("Error Fetching Orders", error));
+      setIsLoading(false);
   }, []);
 
   const filteredOrders =
@@ -164,22 +171,61 @@ function Dashboard() {
     }
   };
 
+  const router = useRouter();
+
+  // Logout Confirmation
+    const handleLogout = () => {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to log out?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, Logout!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          router.push("/admin"); // Redirect to /admin after logout
+        }
+      });
+    };
+
+  if (isLoading) return <div><Loading/></div>;
+  if (error) return <div>Error: {error}</div>;
+
   return (
     <Protected>
-      <div className="min-h-screen flex flex-col md:flex-row bg-white overflow-hidden font-serif">
+      <div className="min-h-screen flex flex-col md:flex-row font-serif bg-gray-50">
         <Sidebar/>
 
         {/* Main Content */}
         <div className="flex-1 flex flex-col">
           {/* Navigation Bar */}
-          <nav className="bg-pink-600 text-white p-4 shadow-lg flex items-center justify-between">
+          <nav className="bg-gradient-to-r from-pink-600 to-purple-600 text-white shadow-sm p-4 flex justify-between items-center">
             
               <Slide direction="left" delay={100} triggerOnce>
                 <h2 className="ml-12 md:ml-64 text-2xl font-bold flex items-center">
-                  <TbShoppingCartDiscount className="w-6 h-6 mr-2" />
+                  <TbShoppingCartDiscount className="w-6 h-6 mr-2 mt-1 md:mt-0" />
                   Hekto Orders
                 </h2>
               </Slide>
+              <div className="flex items-center space-x-2 md:space-x-4">
+                          <button className="flex items-center space-x-2">
+                            <span className="hidden md:inline font-bold">Areeba Bano</span>
+                            <Image
+                              src="/admin.jpg" 
+                              width={32} 
+                              height={32} 
+                              className="w-8 h-8 md:w-10 md:h-10 rounded-full" 
+                              alt="Profile" 
+                            />
+                          </button>
+                         <FiLogOut 
+                         onClick={handleLogout}
+                           size={38} 
+                           className="cursor-pointer p-2 rounded-full text-white font-bold hover:text-red-600 hover:bg-white transition-colors duration-300"
+                         />
+                        </div>
             {/* </div> */}
             
           </nav>
