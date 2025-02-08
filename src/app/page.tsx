@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useInView, useMotionValue, useTransform, animate } from "framer-motion";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { 
   FiArrowRight, 
   FiShoppingCart,
@@ -18,8 +18,43 @@ export default function HomePage() {
   const isInView = useInView(ref, { once: true });
   const cursorX = useMotionValue(0);
   const cursorY = useMotionValue(0);
-  const rotateX = useTransform(cursorY, [0, window.innerHeight], [15, -15]);
-  const rotateY = useTransform(cursorX, [0, window.innerWidth], [-15, 15]);
+  
+  // Safe window dimensions access
+  const [windowSize, setWindowSize] = useState({ 
+    width: 0, 
+    height: 0 
+  });
+
+  const rotateX = useTransform(cursorY, [0, windowSize.height], [15, -15]);
+  const rotateY = useTransform(cursorX, [0, windowSize.width], [-15, 15]);
+
+  useEffect(() => {
+    // Set initial window size
+    setWindowSize({
+      width: window.innerWidth,
+      height: window.innerHeight
+    });
+
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    const moveCursor = (e: MouseEvent) => {
+      cursorX.set(e.clientX);
+      cursorY.set(e.clientY);
+    };
+
+    window.addEventListener('mousemove', moveCursor);
+    window.addEventListener('resize', handleResize);
+    
+    return () => {
+      window.removeEventListener('mousemove', moveCursor);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     const moveCursor = (e: any) => {

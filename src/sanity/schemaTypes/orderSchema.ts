@@ -1,5 +1,3 @@
-// order.ts
-
 export default {
     name: "order",
     type: "document",
