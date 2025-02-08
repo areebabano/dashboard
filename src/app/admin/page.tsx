@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { FaUser, FaSignInAlt, FaEye, FaEyeSlash } from "react-icons/fa";
 
@@ -9,16 +9,20 @@ export default function Admin() {
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [imageSrc, setImageSrc] = useState("/admin.png");
-    const [errorMessage, setErrorMessage] = useState("");  // State for error message
+    const [errorMessage, setErrorMessage] = useState("");  
     const router = useRouter();
 
+    // Ensure the code runs only on the client side
     const handleAdminLogin = (e: React.FormEvent) => {
         e.preventDefault();
-        if (email === "admin@example.com" && password === "password123") {
-            localStorage.setItem("isLoggedIn", "true");  
-            router.push("/admin/dashboard");
-        } else {
-            setErrorMessage("Invalid email or password!");  // Set error message
+        
+        if (typeof window !== "undefined") {
+            if (email === "admin@example.com" && password === "password123") {
+                localStorage.setItem("isLoggedIn", "true");  
+                router.push("/admin/dashboard");
+            } else {
+                setErrorMessage("Invalid email or password!");  
+            }
         }
     };
 
@@ -91,7 +95,7 @@ export default function Admin() {
                     </button>
 
                     {errorMessage && (
-                        <p className="text-red-500 text-sm mt-3 text-center">{errorMessage}</p>  // Display error message
+                        <p className="text-red-500 text-sm mt-3 text-center">{errorMessage}</p>  
                     )}
                 </form>
             </div>
