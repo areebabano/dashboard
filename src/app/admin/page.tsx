@@ -30,7 +30,7 @@ export default function Admin() {
   return (
     // Outer container animation (fade in)
     <motion.div
-      className="flex items-center justify-center min-h-screen bg-white px-6"
+      className="flex items-center justify-center min-h-screen bg-white px-6 font-serif"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
