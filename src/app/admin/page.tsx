@@ -98,7 +98,7 @@ export default function Admin() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.5 }}
           >
-            <label className="block text-gray-700 text-sm font-medium mb-2">
+            <label className="block text-gray-700 text-sm mb-2">
               Email
             </label>
             <input
@@ -117,7 +117,7 @@ export default function Admin() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.6 }}
           >
-            <label className="block text-gray-700 text-sm font-medium mb-2">
+            <label className="block text-gray-700 text-sm mb-2">
               Password
             </label>
             <div className="relative">
@@ -141,7 +141,7 @@ export default function Admin() {
           {/* Login Button with hover brightness effect */}
           <motion.button
             type="submit"
-            className="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white py-2 rounded-md transition duration-300 font-medium flex items-center justify-center gap-2 hover:brightness-110"
+            className="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white py-2 rounded-md transition duration-300 flex items-center justify-center gap-2 hover:brightness-110"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             initial={{ opacity: 0 }}
